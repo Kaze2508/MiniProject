@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+    <script>
+        function updateTable() {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var data = JSON.parse(xhr.responseText);
+                    var table = document.getElementById("myTable");
+                    var tbody = table.getElementsByTagName("tbody")[0];
+                    // tbody.innerHTML = "";
+                    var rows = tbody.getElementsByTagName("tr");
+                    for (var i = 0; i < rows.length; i++) {
+                        tbody.removeChild(rows[i]);
+                    }
+                    for (var i = 0; i < data.length; i++) {
+                        var row = tbody.insertRow();
+                        var idCell = row.insertCell(0);
+                        var topicCell = row.insertCell(1);
+                        var payloadCell = row.insertCell(2);
+                        idCell.innerHTML = data[i].id;
+                        topicCell.innerHTML = data[i].topic;
+                        payloadCell.innerHTML = data[i].payload;
+                    }
+                }
+            };
+            xhr.open("GET", "/my_route", true);
+            xhr.send();
+        }
+        setInterval(updateTable, 1000);
+    </script>
+</body>
+</html>
