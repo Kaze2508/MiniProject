@@ -33,7 +33,7 @@ window.addEventListener('load', function()
         // Check response is ready or not
         if(xhr.readyState == 4 && xhr.status == 200)
         {
-            dataDiv = document.getElementById('liveData');
+            dataDiv = document.getElementById('myTable');
             // Set current data text
             dataDiv.innerHTML = xhr.responseText;
             // Update the live data every 1 sec
