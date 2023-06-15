@@ -3,7 +3,9 @@
 <head>
     <title>Live Update</title>
     <meta charset="UTF-8">
-    <script type="text/javascript" src="autoUpdate.js"></script>
+    <!-- <script type="text/javascript" src="autoUpdate.js"></script> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='autoUpdate.js') }}"></script>
 </head>
 <div id="liveData">
     <p>Loading Data...</p>
