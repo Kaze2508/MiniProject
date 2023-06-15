@@ -13,6 +13,17 @@ mqtt = Mqtt(app)
 def index():
     return render_template('index.html')
 
+@mqtt.on_connect()
+def handle_connect(client, userdata, flags, rc):
+    mqtt.subscribe('home/mytopic')
+
+@mqtt.on_message()
+def handle_mqtt_message(client, userdata, message):
+    data = dict(
+        topic=message.topic,
+        payload=message.payload.decode()
+    )
+
 if __name__ == '__main__':
     app.run(debug=True)
 
