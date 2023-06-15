@@ -10,6 +10,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from pymongo import MongoClient
 import pandas as pd
+import sqlite3
 
 app = Flask(__name__)
 app.config['MQTT_BROKER_URL'] = 'mqtt.flespi.io'
@@ -20,30 +21,34 @@ app.config['MQTT_REFRESH_TIME'] = 1.0
 
 topic = '/topic/subtopic'
 mqtt = Mqtt(app)
-client = MongoClient("mongodb://localhost:27017/")
-db = client["mqtt"]
-collection = db["messages"]
+# db = client["mqtt"]
+# collection = db["messages"]
 
-df = pd.DataFrame(list(collection.find()))
+# df = pd.DataFrame(list(collection.find()))
 
-# Create an output file for the chart
-output_file("line_chart.html")
+# # Create an output file for the chart
+# output_file("line_chart.html")
 
-# Create a figure object for the chart
-p = figure(x_axis_type="datetime", title="MQTT Messages")
+# # Create a figure object for the chart
+# p = figure(x_axis_type="datetime", title="MQTT Messages")
 
-# Add a line glyph to the figure with the data from the DataFrame
-p.line(x=df["topic"], y=df["payload"], line_width=2)
+# # Add a line glyph to the figure with the data from the DataFrame
+# p.line(x=df["topic"], y=df["payload"], line_width=2)
 
-# Show the chart in a web browser
-show(p)
+# # Show the chart in a web browser
+# show(p)
+
+def get_db_connection():
+    conn = sqlite3.connect('database.db')
+    conn.row_factory = sqlite3.Row
+    return conn
 
 @mqtt.on_connect()
 def handle_connect(client, userdata, flags, rc):
     if rc == 0:
         print('Connected successfully')
         mqtt.subscribe(topic) # subscribe topic
-        #mqtt.publish(topic, 'Hell')
+        mqtt.publish(topic, 'Hello')
     else:
         print('Bad connection. Code:', rc)
 
@@ -54,8 +59,6 @@ def handle_mqtt_message(client, userdata, message):
         payload=message.payload.decode()
     )
     print('Received message on topic: {topic} with payload: {payload}'.format(**data))
-    doc = {"topic": topic, "payload": payload}
-    collection.insert_one(doc)
 
 # @app.route('/publish', methods=['POST'])
 # def publish():
@@ -66,6 +69,13 @@ def handle_mqtt_message(client, userdata, message):
 # @app.route('/')
 # def index():
 #     return render_template('index.html')
+
+@app.route('/')
+def index():
+    conn = get_db_connection()
+    posts = conn.execute('SELECT * FROM posts').fetchall()
+    conn.close()
+    return render_template('index.html', posts=posts)
 
 if __name__ == '__main__':
     app.run(debug=True)

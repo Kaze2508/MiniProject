@@ -1,14 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Live Update</title>
-    <meta charset="UTF-8">
-    <!-- <script type="text/javascript" src="autoUpdate.js"></script> -->
-    <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
-    <script type="text/javascript" src="{{ url_for('static', filename='autoUpdate.js') }}"></script>
-</head>
-<div id="liveData">
-    <p>Loading Data...</p>
-</div>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %} Welcome to FlaskBlog {% endblock %}</h1>
+    {% for post in posts %}
+        <a href="#">
+            <h2>{{ post['title'] }}</h2>
+        </a>
+        <span class="badge badge-primary">{{ post['created'] }}</span>
+        <hr>
+    {% endfor %}
+{% endblock %}
