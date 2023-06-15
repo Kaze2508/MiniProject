@@ -18,21 +18,10 @@ window.addEventListener('load', function()
             xhr.send(null);
     };
 
-    // updateLiveData = function()
-    // {
-    //     var now = new Date();
-    //     var url = '/static/livefeed.txt?' + now.getTime();
-    //     xhr = getXmlHttpRequestObject();
-    //     xhr.onreadystatechange = evenHandler;
-    //     xhr.open("GET", url, true);
-    //     xhr.send(null);
-    // };
-
     updateLiveData();
 
     function evenHandler()
     {
-        // Check response is ready or not
         if(xhr.readyState == 4 && xhr.status == 200)
         {
             table = document.getElementById("myTable");

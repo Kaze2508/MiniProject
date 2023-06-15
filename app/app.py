@@ -27,14 +27,6 @@ conn.close()
 def handle_connect(client, userdata, flags, rc):
     mqtt.subscribe(topic)
 
-# @mqtt.on_message()
-# def handle_message(client, userdata, msg):
-#     conn = sqlite3.connect('database.db')
-#     c = conn.cursor()
-#     c.execute("INSERT INTO data (topic, payload) VALUES (?,?)", (msg.topic, msg.payload))
-#     conn.commit()
-#     conn.close()
-
 @mqtt.on_message()
 def handle_message(client, userdata, msg):
     conn = sqlite3.connect('database.db')
