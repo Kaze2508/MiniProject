@@ -1,82 +1,63 @@
-from flask import Flask, render_template
-from flask_mqtt import Mqtt
-from flask import jsonify
-import sqlite3
-import json
-from bokeh.embed import components
-from bokeh.plotting import figure
+from flask import Flask, jsonify, render_template
+import pandas as pd
+import numpy as np
 
 app = Flask(__name__)
-app.config['MQTT_BROKER_URL'] = 'mqtt.flespi.io'
-app.config['MQTT_BROKER_PORT'] = 1883
-app.config['MQTT_USERNAME'] = '8UfmqqhmM4rC04D0mU4gfocqPDluQ93OR9Y5n5fZXxrOrUEBDwIIKKXpb8HR6AvL'
-app.config['MQTT_PASSWORD'] = ''
-app.config['MQTT_REFRESH_TIME'] = 1.0
 
-mqtt = Mqtt(app)
-topic = '/topic/subtopic'
-
-conn = sqlite3.connect('database.db')
-c = conn.cursor()
-c.execute('''CREATE TABLE IF NOT EXISTS data
-             (id INTEGER PRIMARY KEY AUTOINCREMENT,
-              topic TEXT NOT NULL,
-              payload TEXT NOT NULL)''')
-conn.commit()
-conn.close()
-
-@mqtt.on_connect()
-def handle_connect(client, userdata, flags, rc):
-    mqtt.subscribe(topic)
-
-@mqtt.on_message()
-def handle_message(client, userdata, msg):
-    conn = sqlite3.connect('database.db')
-    c = conn.cursor()
-    payload = msg.payload.decode('utf-8')
-    c.execute("INSERT INTO data (topic, payload) VALUES (?,?)", (msg.topic, payload))
-    conn.commit()
-    conn.close()
-
-# @app.route('/')
-# def index():
-#     conn = sqlite3.connect('database.db')
-#     c = conn.cursor()
-#     c.execute("SELECT * FROM data")
-#     data = c.fetchall()
-#     conn.close()
-#     return render_template('index.html', data=data)
+#Reading data
+data_df = pd.read_csv("static/data/churn_data.csv")
+churn_df = data_df[(data_df['Churn']=="Yes").notnull()]
 
 @app.route('/')
-def homepage():
- 
-    # Define Plot Data
-    labels = [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-    ]
- 
-    data = [0, 10, 15, 8, 22, 18, 25]
- 
-    # Return the components to the HTML template
-    return render_template(
-        template_name_or_list='chartjs-example.html',
-        data=data,
-        labels=labels,
-    )
+def index():
+   return render_template('index.html')
 
-@app.route('/my_route')
-def my_route():
-    conn = sqlite3.connect('database.db')
-    c = conn.cursor()
-    c.execute("SELECT * FROM data")
-    data = c.fetchall()
-    conn.close()
-    return render_template('index.html', data=data)
+def calculate_percentage(val, total):
+   """Calculates the percentage of a value over a total"""
+   percent = np.round((np.divide(val, total) * 100), 2)
+   return percent
+
+def data_creation(data, percent, class_labels, group=None):
+   for index, item in enumerate(percent):
+       data_instance = {}
+       data_instance['category'] = class_labels[index]
+       data_instance['value'] = item
+       data_instance['group'] = group
+       data.append(data_instance)
+
+@app.route('/get_piechart_data')
+def get_piechart_data():
+   contract_labels = ['Month-to-month', 'One year', 'Two year']
+   _ = churn_df.groupby('Contract').size().values
+   class_percent = calculate_percentage(_, np.sum(_)) #Getting the value counts and total
+
+   piechart_data= []
+   data_creation(piechart_data, class_percent, contract_labels)
+   return jsonify(piechart_data)
+
+@app.route('/get_barchart_data')
+def get_barchart_data():
+   tenure_labels = ['0-9', '10-19', '20-29', '30-39', '40-49', '50-59', '60-69', '70-79']
+   churn_df['tenure_group'] = pd.cut(churn_df.tenure, range(0, 81, 10), labels=tenure_labels)
+   select_df = churn_df[['tenure_group','Contract']]
+   contract_month = select_df[select_df['Contract']=='Month-to-month']
+   contract_one = select_df[select_df['Contract']=='One year']
+   contract_two =  select_df[select_df['Contract']=='Two year']
+   _ = contract_month.groupby('tenure_group').size().values
+   mon_percent = calculate_percentage(_, np.sum(_))
+   _ = contract_one.groupby('tenure_group').size().values
+   one_percent = calculate_percentage(_, np.sum(_))
+   _ = contract_two.groupby('tenure_group').size().values
+   two_percent = calculate_percentage(_, np.sum(_))
+   _ = select_df.groupby('tenure_group').size().values
+   all_percent = calculate_percentage(_, np.sum(_))
+
+   barchart_data = []
+   data_creation(barchart_data,all_percent, tenure_labels, "All")
+   data_creation(barchart_data,mon_percent, tenure_labels, "Month-to-month")
+   data_creation(barchart_data,one_percent, tenure_labels, "One year")
+   data_creation(barchart_data,two_percent, tenure_labels, "Two year")
+   return jsonify(barchart_data)
 
 if __name__ == '__main__':
-    app.run()
+   app.run(debug=True)
