@@ -38,36 +38,36 @@ def handle_message(client, userdata, msg):
     conn.commit()
     conn.close()
 
-# @app.route('/')
-# def index():
-#     conn = sqlite3.connect('database.db')
-#     c = conn.cursor()
-#     c.execute("SELECT * FROM data")
-#     data = c.fetchall()
-#     conn.close()
-#     return render_template('index.html', data=data)
-
 @app.route('/')
-def homepage():
+def index():
+    conn = sqlite3.connect('database.db')
+    c = conn.cursor()
+    c.execute("SELECT * FROM data")
+    data = c.fetchall()
+    conn.close()
+    return render_template('index.html', data=data)
+
+# @app.route('/')
+# def homepage():
  
-    # Define Plot Data
-    labels = [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-    ]
+#     # Define Plot Data
+#     labels = [
+#         'January',
+#         'February',
+#         'March',
+#         'April',
+#         'May',
+#         'June',
+#     ]
  
-    data = [0, 10, 15, 8, 22, 18, 25]
+#     data = [0, 10, 15, 8, 22, 18, 25]
  
-    # Return the components to the HTML template
-    return render_template(
-        template_name_or_list='chartjs-example.html',
-        data=data,
-        labels=labels,
-    )
+#     # Return the components to the HTML template
+#     return render_template(
+#         template_name_or_list='chartjs-example.html',
+#         data=data,
+#         labels=labels,
+#     )
 
 @app.route('/my_route')
 def my_route():
