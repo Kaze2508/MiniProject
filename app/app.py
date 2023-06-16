@@ -5,7 +5,8 @@ import numpy as np
 app = Flask(__name__)
 
 #Reading data
-data_df = pd.read_csv("static/data/churn_data.csv")
+#data_df = pd.read_csv("D:/Projects/MiniProject/app/static/data/churn_data.csv")
+data_df = pd.read_csv('app/static/data/churn_data.csv')
 churn_df = data_df[(data_df['Churn']=="Yes").notnull()]
 
 @app.route('/')
