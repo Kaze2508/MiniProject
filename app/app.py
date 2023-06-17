@@ -9,12 +9,12 @@ from bokeh.plotting import figure
 app = Flask(__name__)
 app.config['MQTT_BROKER_URL'] = 'mqtt.flespi.io'
 app.config['MQTT_BROKER_PORT'] = 1883
-app.config['MQTT_USERNAME'] = '8UfmqqhmM4rC04D0mU4gfocqPDluQ93OR9Y5n5fZXxrOrUEBDwIIKKXpb8HR6AvL'
+app.config['MQTT_USERNAME'] = 'eco7k4WNUKZYNP2SxQmcxDP5SN3n8qBcrP7BHTdrs0d3F3L0JV14pE05fRid8Idp'
 app.config['MQTT_PASSWORD'] = ''
 app.config['MQTT_REFRESH_TIME'] = 1.0
 
 mqtt = Mqtt(app)
-topic = '/topic/subtopic'
+topic = '/data'
 
 conn = sqlite3.connect('database.db')
 c = conn.cursor()
