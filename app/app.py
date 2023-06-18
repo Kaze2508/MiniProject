@@ -3,31 +3,52 @@ from flask_socketio import SocketIO
 from threading import Thread
 import paho.mqtt.client as mqtt
 import random
+import sqlite3
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret_key'
 socketio = SocketIO(app)
 
 temperature_data = []  # Store received temperature data
+humidity_data = []  # Store received humidity data
 
 # MQTT configuration
 mqtt_broker = 'mqtt.flespi.io'
 mqtt_port = 1883
 mqtt_username = 'eco7k4WNUKZYNP2SxQmcxDP5SN3n8qBcrP7BHTdrs0d3F3L0JV14pE05fRid8Idp'
-mqtt_topic = '/data'
+temperature_topic = '/temperature'
+humidity_topic = '/humidity'
+
+conn = sqlite3.connect('database.db')
+c = conn.cursor()
+c.execute('''CREATE TABLE IF NOT EXISTS data
+             (id INTEGER PRIMARY KEY AUTOINCREMENT,
+              timestamp TEXT NOT NULL,
+              topic TEXT NOT NULL,
+              payload TEXT NOT NULL)''')
+conn.commit()
 
 # MQTT callback functions
 def on_connect(client, userdata, flags, rc):
     print('Connected to MQTT broker')
-    client.subscribe(mqtt_topic)
+    client.subscribe([(temperature_topic, 0), (humidity_topic, 0)])
 
 def on_message(client, userdata, msg):
-    temperature = float(msg.payload.decode())
-    random_offset = random.uniform(-3, 3)  # Generate a random value between -3 and 3
-    temperature += random_offset
-    temperature_data.append(temperature)
-    print(temperature)
-    socketio.emit('new_temperature', {'temperature': temperature})
+    topic = msg.topic
+    if topic == temperature_topic:
+        temperature = float(msg.payload.decode())
+        random_offset = random.uniform(-1, 1)
+        temperature += random_offset
+        temperature_data.append(temperature)
+        print('Temperature:', temperature)
+        socketio.emit('new_temperature', {'temperature': temperature})
+    elif topic == humidity_topic:
+        humidity = float(msg.payload.decode())
+        random_typo = random.uniform(-1, 1)
+        humidity += random_typo
+        humidity_data.append(humidity)
+        print('Humidity:', humidity)
+        socketio.emit('new_humidity', {'humidity': humidity})
 
 def mqtt_thread():
     client = mqtt.Client()
@@ -44,8 +65,9 @@ def index():
 
 @socketio.on('connect')
 def handle_connect():
-    print(temperature_data)
-    socketio.emit('chart_data', {'temperature_data': temperature_data})
+    print('Temperature Data:', temperature_data)
+    print('Humidity Data:', humidity_data)
+    socketio.emit('chart_data', {'temperature_data': temperature_data, 'humidity_data': humidity_data})
 
 # Background thread to start MQTT client
 mqtt_thread = Thread(target=mqtt_thread)

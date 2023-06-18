@@ -92,7 +92,7 @@
                 datasets: [{
                   label: 'Temperature',
                   data: [20],
-                  borderColor: 'blue',
+                  borderColor: '#e48bae',
                   borderWidth: 2
                 }]
               },
@@ -143,6 +143,64 @@
       </div>
       <div class="chartSession col">
         <canvas id="chart-humidity"></canvas>
+        <script>
+          var ctx = document.getElementById('chart-humidity').getContext('2d');
+      
+          // Initialize an empty chart
+          var chartHumidity = new Chart(ctx, {
+            type: 'line',
+            data: {
+              labels: [1],
+              datasets: [{
+                label: 'Humidity',
+                data: [50],
+                borderColor: '#9575cd',
+                borderWidth: 2
+              }]
+            },
+            options: {
+              responsive: true,
+              scales: {
+                x: {
+                  display: true
+                },
+                y: {
+                  display: true
+                }
+              }
+            }
+          });
+      
+          var socket = io.connect();
+          socket.on('connect', function() {
+            console.log('Connected to server');
+          });
+      
+          socket.on('chart_data', function(data) {
+            var humidityData = data.humidity_data;
+      
+            // Update the labels and data in the chart
+            chartHumidity.data.labels = humidityData.map(function(_, index) {
+              return index + 1;
+            });
+            chartHumidity.data.datasets[0].data = humidityData;
+      
+            // Update the chart
+            chartHumidity.update();
+          });
+      
+          socket.on('new_humidity', function(data) {
+            var humidity = data.humidity;
+            var timestamp = data.timestamp;
+      
+            // Add a new data point to the chart
+            chartHumidity.data.labels.push(chartHumidity.data.labels.length);
+            chartHumidity.data.datasets[0].data.push(humidity);
+      
+            // Update the chart
+            chartHumidity.update();
+          });
+        </script>
       </div>
     </div>
   </div>
