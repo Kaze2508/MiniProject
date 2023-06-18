@@ -103,6 +103,31 @@ def my_route():
 
     return render_template('database.html', data=data)
 
+@app.route('/update_temp')
+def update_temp():
+    conn = sqlite3.connect('database.db')
+    c = conn.cursor()
+    c.execute("SELECT ROUND(sensor_data, 2) FROM data WHERE sensor_type='Temperature' ORDER BY id DESC LIMIT 1")
+    temperature = c.fetchone()
+    conn.close()
+    if temperature:
+        return str(temperature[0])
+    else:
+        return ""
+
+
+@app.route('/update_humi')
+def update_humi():
+    conn = sqlite3.connect('database.db')
+    c = conn.cursor()
+    c.execute("SELECT ROUND(sensor_data, 2) FROM data WHERE sensor_type='Humidity' ORDER BY id DESC LIMIT 1")
+    humidity = c.fetchone()
+    conn.close()
+    if humidity:
+        return str(humidity[0])
+    else:
+        return ""
+
 @socketio.on('connect')
 def handle_connect():
     print('Temperature Data:', temperature_data)

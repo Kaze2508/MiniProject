@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard</title>
+  <script type="text/javascript" src="{{ url_for('static', filename= 'carrot.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename= 'jungkook.js') }}"></script>
 
   <!-- google font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -59,10 +61,10 @@
             <div class="temperature-card col col-sm-6">
               <div class="card border-0 mx-auto card-component" style="width: 18rem;">
                 <div class="card-body">
-                  <h2 class="card-title font-weight-bold">Nhiệt độ</h2>
+                  <h2 class="card-title font-weight-bold">Độ ẩm</h2>
                   <div class="display-data-wrap row">
-                    <div class="col-2 icon-wrap"><i class="fa-solid fa-temperature-three-quarters icon-data"></i></div>
-                    <div class="col data-wrap"><p class="data-content font-weight-bold"><span id="temp">33</span>°C</p></div>
+                    <div class="col-2 icon-wrap"><i class="fa-solid fa-droplet icon-data"></i></div>
+                    <div class="col data-wrap"><p class="data-content font-weight-bold"><span id="temp">33</span></p></div>
                   </div>
                 </div>
               </div>
@@ -70,10 +72,10 @@
             <div class="humidity-card col col-sm-6">
               <div class="card border-0 mx-auto card-component" style="width: 18rem;">
                 <div class="card-body">
-                  <h2 class="card-title font-weight-bold">Độ ẩm</h2>
+                  <h2 class="card-title font-weight-bold">Nhiệt độ</h2>
                   <div class="display-data-wrap row">
-                    <div class="col-2 icon-wrap"><i class="fa-solid fa-droplet icon-data"></i></div>
-                    <div class="col data-wrap"><p class="data-content font-weight-bold"><span id="hum">00</span>%</p></div>
+                    <div class="col-2 icon-wrap"><i class="fa-solid fa-temperature-three-quarters icon-data"></i></div>
+                    <div class="col data-wrap"><p class="data-content font-weight-bold"><span id="hum">00</span></p></div>
                   </div>
                 </div>
               </div>
