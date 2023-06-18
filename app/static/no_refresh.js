@@ -44,7 +44,7 @@ window.addEventListener('load', function()
             //     topicCell.innerHTML = dData[i].topic;
             //     payloadCell.innerHTML = dData[i].payload;
             // }
-            setTimeout(updateLiveData(), 1000);
+            setTimeout(updateLiveData(), 50000);
         }
     }
 });

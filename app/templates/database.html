@@ -2,17 +2,16 @@
 <html>
 <head>
     <title>MQTT Data</title>
-    <script type="text/javascript" src="{{ url_for('static', filename= 'no_refresh.js') }}">
-        
-    </script>
+    <script type="text/javascript" src="{{ url_for('static', filename= 'no_refresh.js') }}"></script>
 </head>
 <body>
     <table id="myTable">
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Topic</th>
-                <th>Payload</th>
+                <th>Timestamp</th>
+                <th>Sensor Data</th>
+                <th>Sensor Type</th>
             </tr>
         </thead>
         <tbody>
@@ -21,6 +20,7 @@
                 <td>{{ row[0] }}</td>
                 <td>{{ row[1] }}</td>
                 <td>{{ row[2] }}</td>
+                <td>{{ row[3] }}</td>
             </tr>
             {% endfor %}
         </tbody>
