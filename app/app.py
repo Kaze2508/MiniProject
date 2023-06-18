@@ -1,82 +1,55 @@
 from flask import Flask, render_template
-from flask_mqtt import Mqtt
-from flask import jsonify
-import sqlite3
-import json
-from bokeh.embed import components
-from bokeh.plotting import figure
+from flask_socketio import SocketIO
+from threading import Thread
+import paho.mqtt.client as mqtt
+import random
 
 app = Flask(__name__)
-app.config['MQTT_BROKER_URL'] = 'mqtt.flespi.io'
-app.config['MQTT_BROKER_PORT'] = 1883
-app.config['MQTT_USERNAME'] = 'eco7k4WNUKZYNP2SxQmcxDP5SN3n8qBcrP7BHTdrs0d3F3L0JV14pE05fRid8Idp'
-app.config['MQTT_PASSWORD'] = ''
-app.config['MQTT_REFRESH_TIME'] = 1.0
+app.config['SECRET_KEY'] = 'secret_key'
+socketio = SocketIO(app)
 
-mqtt = Mqtt(app)
-topic = '/data'
+temperature_data = []  # Store received temperature data
 
-conn = sqlite3.connect('database.db')
-c = conn.cursor()
-c.execute('''CREATE TABLE IF NOT EXISTS data
-             (id INTEGER PRIMARY KEY AUTOINCREMENT,
-              topic TEXT NOT NULL,
-              payload TEXT NOT NULL)''')
-conn.commit()
-conn.close()
+# MQTT configuration
+mqtt_broker = 'mqtt.flespi.io'
+mqtt_port = 1883
+mqtt_username = 'eco7k4WNUKZYNP2SxQmcxDP5SN3n8qBcrP7BHTdrs0d3F3L0JV14pE05fRid8Idp'
+mqtt_topic = '/data'
 
-@mqtt.on_connect()
-def handle_connect(client, userdata, flags, rc):
-    mqtt.subscribe(topic)
+# MQTT callback functions
+def on_connect(client, userdata, flags, rc):
+    print('Connected to MQTT broker')
+    client.subscribe(mqtt_topic)
 
-@mqtt.on_message()
-def handle_message(client, userdata, msg):
-    conn = sqlite3.connect('database.db')
-    c = conn.cursor()
-    payload = msg.payload.decode('utf-8')
-    c.execute("INSERT INTO data (topic, payload) VALUES (?,?)", (msg.topic, payload))
-    conn.commit()
-    conn.close()
+def on_message(client, userdata, msg):
+    temperature = float(msg.payload.decode())
+    random_offset = random.uniform(-3, 3)  # Generate a random value between -3 and 3
+    temperature += random_offset
+    temperature_data.append(temperature)
+    print(temperature)
+    socketio.emit('new_temperature', {'temperature': temperature})
 
+def mqtt_thread():
+    client = mqtt.Client()
+    client.username_pw_set(username=mqtt_username)
+    client.on_connect = on_connect
+    client.on_message = on_message
+    client.connect(mqtt_broker, mqtt_port, 60)
+    client.loop_forever()
+
+# Route to render the chart webpage
 @app.route('/')
 def index():
-    conn = sqlite3.connect('database.db')
-    c = conn.cursor()
-    c.execute("SELECT * FROM data")
-    data = c.fetchall()
-    conn.close()
-    return render_template('index.html', data=data)
+    return render_template('index.html')
 
-# @app.route('/')
-# def homepage():
- 
-#     # Define Plot Data
-#     labels = [
-#         'January',
-#         'February',
-#         'March',
-#         'April',
-#         'May',
-#         'June',
-#     ]
- 
-#     data = [0, 10, 15, 8, 22, 18, 25]
- 
-#     # Return the components to the HTML template
-#     return render_template(
-#         template_name_or_list='chartjs-example.html',
-#         data=data,
-#         labels=labels,
-#     )
+@socketio.on('connect')
+def handle_connect():
+    print(temperature_data)
+    socketio.emit('chart_data', {'temperature_data': temperature_data})
 
-@app.route('/my_route')
-def my_route():
-    conn = sqlite3.connect('database.db')
-    c = conn.cursor()
-    c.execute("SELECT * FROM data")
-    data = c.fetchall()
-    conn.close()
-    return render_template('index.html', data=data)
+# Background thread to start MQTT client
+mqtt_thread = Thread(target=mqtt_thread)
+mqtt_thread.start()
 
 if __name__ == '__main__':
-    app.run()
+    socketio.run(app)

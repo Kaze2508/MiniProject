@@ -1,29 +1,70 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>MQTT Data</title>
-    <script type="text/javascript" src="{{ url_for('static', filename= 'no_refresh.js') }}">
-        
-    </script>
+  <title>Temperature Chart</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.1/socket.io.min.js"></script>
 </head>
 <body>
-    <table id="myTable">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Topic</th>
-                <th>Payload</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for row in data %}
-            <tr>
-                <td>{{ row[0] }}</td>
-                <td>{{ row[1] }}</td>
-                <td>{{ row[2] }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+  <canvas id="chart"></canvas>
+  <script>
+    var ctx = document.getElementById('chart').getContext('2d');
+
+    // Initialize an empty chart
+    var chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: [1],
+        datasets: [{
+          label: 'Temperature',
+          data: [20],
+          borderColor: 'blue',
+          borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          x: {
+            display: true
+          },
+          y: {
+            display: true
+          }
+        }
+      }
+    });
+
+    var socket = io.connect();
+    socket.on('connect', function() {
+      console.log('Connected to server');
+    });
+
+    socket.on('chart_data', function(data) {
+      var temperatureData = data.temperature_data;
+
+      // Update the labels and data in the chart
+      // chart.data.labels = Array.from({ length: temperatureData.length }, (_, i) => i);
+      chart.data.labels = temperatureData.map(function(_, index) {
+        return index + 1;
+      });
+      chart.data.datasets[0].data = temperatureData;
+
+      // Update the chart
+      chart.update();
+    });
+
+    socket.on('new_temperature', function(data) {
+      var temperature = data.temperature;
+      var timestamp = data.timestamp;
+
+      // Add a new data point to the chart
+      chart.data.labels.push(chart.data.labels.length);
+      chart.data.datasets[0].data.push(temperature);
+
+      // Update the chart
+      chart.update();
+    });
+  </script>
 </body>
 </html>
