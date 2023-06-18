@@ -1,3 +1,24 @@
+body {
+    font-family: 'Nunito', sans-serif!important;
+    margin:0;
+    padding:0;
+}
+
+#menu ul li a {
+    color: #d1c4e9;
+}
+
+#menu ul li a:hover, 
+#menu nav a.navbar-brand {
+    color: white;
+}
+#menu ul li a.active {
+    color: white;
+}
+.font-weight-bold {
+    font-weight: bold;
+}
+
 .font-weight-bold {
     font-weight: bold;
 }
@@ -10,4 +31,8 @@
 } 
 .data-content {
     font-size: 24px;
+}
+
+#menu  > .navbar.navbar-expand-lg.navbar-dark.bg-dark {
+    background-color: #7c4dff!important;
 }

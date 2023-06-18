@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard</title>
 
+  <!-- google font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;700&display=swap" rel="stylesheet">
+
   <script src="https://kit.fontawesome.com/b695317bbe.js" crossorigin="anonymous"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -14,35 +19,33 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
-  <div class="container">
-    <!-- menu -->
-    <div id="menu">
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <div class="container-fluid">
-            <a class="navbar-brand font-weight-bold" href="#">Dashboard</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-              <ul class="navbar-nav ">
-                <li class="nav-item">
-                  <a class="nav-link active mx-2 font-weight-bold" aria-current="page" href="#">Home</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link mx-2 font-weight-bold" href="#">Tracking</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link mx-2 font-weight-bold" href="#">User</a>
-                </li>
-              </ul>
-            </div>
+  <div id="menu">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand font-weight-bold " href="#">Dashboard</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav ">
+              <li class="nav-item">
+                <a class="nav-link active mx-2 font-weight-bold" aria-current="page" href="#">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link mx-2 font-weight-bold" href="#">Tracking</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link mx-2 font-weight-bold" href="#">User</a>
+              </li>
+            </ul>
           </div>
-        </nav>
-    </div>
-  <!-- end menu -->
+        </div>
+      </nav>
+  </div>
+  <div class="container-fluid">
     <div class="container wrap-content">
       <div class="row">
-        <div class="col greeting-card">
+        <div class="greeting-card col-md-12">
           <div class="card border-0">
             <div class="card-body">
               <p class="font-weight-light" style="margin-bottom:0;">Hello, <b class="font-weight-bold">Lộc</b></p>
@@ -51,159 +54,162 @@
           </div>
           
         </div>
-        <div class="col temperature-card">
-          <div class="card border-0 mx-auto card-component" style="width: 18rem;">
-            <div class="card-body">
-              <h2 class="card-title font-weight-bold">Nhiệt độ</h2>
-              <div class="display-data-wrap row">
-                <div class="col-2 icon-wrap"><i class="fa-solid fa-temperature-three-quarters icon-data"></i></div>
-                <div class="col data-wrap"><p class="data-content font-weight-bold"><span id="temp">33</span>°C</p></div>
+        <div class="col container card-nav">
+          <div class="row">
+            <div class="temperature-card col-6">
+              <div class="card border-0 mx-auto card-component" style="width: 18rem;">
+                <div class="card-body">
+                  <h2 class="card-title font-weight-bold">Nhiệt độ</h2>
+                  <div class="display-data-wrap row">
+                    <div class="col-2 icon-wrap"><i class="fa-solid fa-temperature-three-quarters icon-data"></i></div>
+                    <div class="col data-wrap"><p class="data-content font-weight-bold"><span id="temp">33</span>°C</p></div>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div class="col humidity-card">
-          <div class="card border-0 mx-auto card-component" style="width: 18rem;">
-            <div class="card-body">
-              <h2 class="card-title font-weight-bold">Độ Ẩm</h2>
-              <div class="display-data-wrap row">
-                <div class="col-2 icon-wrap"><i class="fa-solid fa-droplet icon-data"></i></div>
-                <div class="col data-wrap"><p class="data-content font-weight-bold"><span id="hum">00</span>%</p></div>
+            <div class="humidity-card col-6">
+              <div class="card border-0 mx-auto card-component" style="width: 18rem;">
+                <div class="card-body">
+                  <h2 class="card-title font-weight-bold">Độ ẩm</h2>
+                  <div class="display-data-wrap row">
+                    <div class="col-2 icon-wrap"><i class="fa-solid fa-droplet icon-data"></i></div>
+                    <div class="col data-wrap"><p class="data-content font-weight-bold"><span id="hum">00</span>%</p></div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-
-  <div class="container wrap-chart">
-    <div class="row">
-      <div class="chartSession col" style="width:70%;">
-        <canvas id="chart"></canvas>
-          <script>
-            var ctx = document.getElementById('chart').getContext('2d');
-
-            // Initialize an empty chart
-            var chart = new Chart(ctx, {
-              type: 'line',
-              data: {
-                labels: [1],
-                datasets: [{
-                  label: 'Temperature',
-                  data: [20],
-                  borderColor: '#e48bae',
-                  borderWidth: 2
-                }]
-              },
-              options: {
-                responsive: true,
-                scales: {
-                  x: {
-                    display: true
-                  },
-                  y: {
-                    display: true
-                  }
-                }
-              }
-            });
-
-            var socket = io.connect();
-            socket.on('connect', function() {
-              console.log('Connected to server');
-            });
-
-            socket.on('chart_data', function(data) {
-              var temperatureData = data.temperature_data;
-
-              // Update the labels and data in the chart
-              // chart.data.labels = Array.from({ length: temperatureData.length }, (_, i) => i);
-              chart.data.labels = temperatureData.map(function(_, index) {
-                return index + 1;
-              });
-              chart.data.datasets[0].data = temperatureData;
-
-              // Update the chart
-              chart.update();
-            });
-
-            socket.on('new_temperature', function(data) {
-              var temperature = data.temperature;
-              var timestamp = data.timestamp;
-
-              // Add a new data point to the chart
-              chart.data.labels.push(chart.data.labels.length);
-              chart.data.datasets[0].data.push(temperature);
-
-              // Update the chart
-              chart.update();
-            });
-          </script>
-      </div>
-      <div class="chartSession col">
-        <canvas id="chart-humidity"></canvas>
-        <script>
-          var ctx = document.getElementById('chart-humidity').getContext('2d');
-      
-          // Initialize an empty chart
-          var chartHumidity = new Chart(ctx, {
-            type: 'line',
-            data: {
-              labels: [1],
-              datasets: [{
-                label: 'Humidity',
-                data: [50],
-                borderColor: '#9575cd',
-                borderWidth: 2
-              }]
-            },
-            options: {
-              responsive: true,
-              scales: {
-                x: {
-                  display: true
-                },
-                y: {
-                  display: true
-                }
-              }
-            }
-          });
-      
-          var socket = io.connect();
-          socket.on('connect', function() {
-            console.log('Connected to server');
-          });
-      
-          socket.on('chart_data', function(data) {
-            var humidityData = data.humidity_data;
-      
-            // Update the labels and data in the chart
-            chartHumidity.data.labels = humidityData.map(function(_, index) {
-              return index + 1;
-            });
-            chartHumidity.data.datasets[0].data = humidityData;
-      
-            // Update the chart
-            chartHumidity.update();
-          });
-      
-          socket.on('new_humidity', function(data) {
-            var humidity = data.humidity;
-            var timestamp = data.timestamp;
-      
-            // Add a new data point to the chart
-            chartHumidity.data.labels.push(chartHumidity.data.labels.length);
-            chartHumidity.data.datasets[0].data.push(humidity);
-      
-            // Update the chart
-            chartHumidity.update();
-          });
-        </script>
+    <div class="container wrap-chart">
+      <div class="row">
+        <div class="chartSession col" >
+          <canvas id="chart"></canvas>
+        </div>
+        <div class="chartSession col" >
+          <canvas id="chart-humidity"></canvas>
+        </div>
       </div>
     </div>
   </div>
+  <script>
+    var ctx = document.getElementById('chart').getContext('2d');
+
+    // Initialize an empty chart
+    var chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: [1],
+        datasets: [{
+          label: 'Temperature',
+          data: [20],
+          borderColor: '#e48bae',
+          borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          x: {
+            display: true
+          },
+          y: {
+            display: true
+          }
+        }
+      }
+    });
+
+    var socket = io.connect();
+    socket.on('connect', function() {
+      console.log('Connected to server');
+    });
+
+    socket.on('chart_data', function(data) {
+      var temperatureData = data.temperature_data;
+
+      // Update the labels and data in the chart
+      // chart.data.labels = Array.from({ length: temperatureData.length }, (_, i) => i);
+      chart.data.labels = temperatureData.map(function(_, index) {
+        return index + 1;
+      });
+      chart.data.datasets[0].data = temperatureData;
+
+      // Update the chart
+      chart.update();
+    });
+
+    socket.on('new_temperature', function(data) {
+      var temperature = data.temperature;
+      var timestamp = data.timestamp;
+
+      // Add a new data point to the chart
+      chart.data.labels.push(chart.data.labels.length);
+      chart.data.datasets[0].data.push(temperature);
+
+      // Update the chart
+      chart.update();
+    });
+  </script>
+  <script>
+    var ctx = document.getElementById('chart-humidity').getContext('2d');
+
+    // Initialize an empty chart
+    var chartHumidity = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: [1],
+        datasets: [{
+          label: 'Humidity',
+          data: [50],
+          borderColor: '#9575cd',
+          borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          x: {
+            display: true
+          },
+          y: {
+            display: true
+          }
+        }
+      }
+    });
+
+    var socket = io.connect();
+    socket.on('connect', function() {
+      console.log('Connected to server');
+    });
+
+    socket.on('chart_data', function(data) {
+      var humidityData = data.humidity_data;
+
+      // Update the labels and data in the chart
+      chartHumidity.data.labels = humidityData.map(function(_, index) {
+        return index + 1;
+      });
+      chartHumidity.data.datasets[0].data = humidityData;
+
+      // Update the chart
+      chartHumidity.update();
+    });
+
+    socket.on('new_humidity', function(data) {
+      var humidity = data.humidity;
+      var timestamp = data.timestamp;
+
+      // Add a new data point to the chart
+      chartHumidity.data.labels.push(chartHumidity.data.labels.length);
+      chartHumidity.data.datasets[0].data.push(humidity);
+
+      // Update the chart
+      chartHumidity.update();
+    });
+  </script>
   
 
 
