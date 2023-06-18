@@ -127,12 +127,17 @@ def update_humi():
         return str(humidity[0])
     else:
         return ""
+    
+@app.route('/database')
+def database():
+    return render_template('database.html')
 
 @socketio.on('connect')
 def handle_connect():
     print('Temperature Data:', temperature_data)
     print('Humidity Data:', humidity_data)
     socketio.emit('chart_data', {'temperature_data': temperature_data, 'humidity_data': humidity_data})
+    
 
 # Background thread to start MQTT client
 mqtt_thread = Thread(target=mqtt_thread)
