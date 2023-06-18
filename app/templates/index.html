@@ -34,7 +34,7 @@
                 <a class="nav-link active mx-2 font-weight-bold" aria-current="page" href="#">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link mx-2 font-weight-bold" href="#">Tracking</a>
+                <a class="nav-link mx-2 font-weight-bold" href="database.html">Database</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link mx-2 font-weight-bold" href="#">User</a>
@@ -48,13 +48,23 @@
     <div class="container wrap-content">
       <div class="row">
         <div class="greeting-card col-md-12">
-          <img src="{{ url_for('static', filename='img/BT21.png') }}" alt="" width="500">
-          <div class="card border-0">
-            <div class="card-body">
-              <p class="font-weight-light" style="margin-bottom:0;">Hello, <b class="font-weight-bold">Lộc</b></p>
-              <p class="font-weight-light">Nhà bạn vẫn an toàn.</p>
-            </div>
+          <div class="row greeting-flex">
+            <div class="col-5">
+              <div class="thichnguyen">
+                <img src="{{ url_for('static', filename='img/BT21.png') }}" alt="" width="400"></div>
+              <!-- <img src="/app/static/img/BT21.png" alt="" width="400"> -->
+              </div>
+  
+            <div class="col d-flex align-items-center greeting-content">
+              <div class="card border-0">
+              <div class="card-body">
+                <p class="font-weight-light" style="margin-bottom:0;">Hello, <b class="font-weight-bold">Lộc</b></p>
+                <p class="font-weight-light">Nhà bạn vẫn an toàn.</p>
+              </div>
+            </div></div>
           </div>
+          
+          
           
         </div>
         <div class="col container card-nav">

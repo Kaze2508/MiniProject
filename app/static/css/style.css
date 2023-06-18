@@ -37,3 +37,13 @@ body {
 #menu  > .navbar.navbar-expand-lg.navbar-dark.bg-dark {
     background-color: #7c4dff!important;
 }
+
+@media screen and (max-width: 500px) {
+    .greeting-content {
+        width: 100%;
+    }
+    .greeting-flex {
+        flex-direction: column!important;
+    }
+}
+
