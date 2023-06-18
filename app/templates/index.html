@@ -1,78 +1,159 @@
-{% extends 'base.html' %}
-{% block head %}
-  {% block title %}Temperature Chart {% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+
+  <script src="https://kit.fontawesome.com/b695317bbe.js" crossorigin="anonymous"></script>
+
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.1/socket.io.min.js"></script>
   <link rel="stylesheet" href="../static/css/style.css">
-
-
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-{% endblock %}
-{% block content %}
-  <canvas id="chart"></canvas>
-  <script>
-    var ctx = document.getElementById('chart').getContext('2d');
+</head>
+<body>
+  <div class="container">
+    <!-- menu -->
+    <div id="menu">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <div class="container-fluid">
+            <a class="navbar-brand font-weight-bold" href="#">Dashboard</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+              <ul class="navbar-nav ">
+                <li class="nav-item">
+                  <a class="nav-link active mx-2 font-weight-bold" aria-current="page" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link mx-2 font-weight-bold" href="#">Tracking</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link mx-2 font-weight-bold" href="#">User</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+    </div>
+  <!-- end menu -->
+    <div class="container wrap-content">
+      <div class="row">
+        <div class="col greeting-card">
+          <div class="card border-0">
+            <div class="card-body">
+              <p class="font-weight-light" style="margin-bottom:0;">Hello, <b class="font-weight-bold">Lộc</b></p>
+              <p class="font-weight-light">Your device under your control.</p>
+            </div>
+          </div>
+          
+        </div>
+        <div class="col temperature-card">
+          <div class="card border-0 mx-auto card-component" style="width: 18rem;">
+            <div class="card-body">
+              <h2 class="card-title font-weight-bold">Nhiệt độ</h2>
+              <div class="display-data-wrap row">
+                <div class="col-2 icon-wrap"><i class="fa-solid fa-temperature-three-quarters icon-data"></i></div>
+                <div class="col data-wrap"><p class="data-content font-weight-bold"><span id="temp">33</span>°C</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col humidity-card">
+          <div class="card border-0 mx-auto card-component" style="width: 18rem;">
+            <div class="card-body">
+              <h2 class="card-title font-weight-bold">Độ Ẩm</h2>
+              <div class="display-data-wrap row">
+                <div class="col-2 icon-wrap"><i class="fa-solid fa-droplet icon-data"></i></div>
+                <div class="col data-wrap"><p class="data-content font-weight-bold"><span id="hum">00</span>%</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    // Initialize an empty chart
-    var chart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: [1],
-        datasets: [{
-          label: 'Temperature',
-          data: [20],
-          borderColor: 'blue',
-          borderWidth: 2
-        }]
-      },
-      options: {
-        responsive: true,
-        scales: {
-          x: {
-            display: true
-          },
-          y: {
-            display: true
-          }
-        }
-      }
-    });
+  <div class="container wrap-chart">
+    <div class="row">
+      <div class="chartSession col" style="width:70%;">
+        <canvas id="chart"></canvas>
+          <script>
+            var ctx = document.getElementById('chart').getContext('2d');
 
-    var socket = io.connect();
-    socket.on('connect', function() {
-      console.log('Connected to server');
-    });
+            // Initialize an empty chart
+            var chart = new Chart(ctx, {
+              type: 'line',
+              data: {
+                labels: [1],
+                datasets: [{
+                  label: 'Temperature',
+                  data: [20],
+                  borderColor: 'blue',
+                  borderWidth: 2
+                }]
+              },
+              options: {
+                responsive: true,
+                scales: {
+                  x: {
+                    display: true
+                  },
+                  y: {
+                    display: true
+                  }
+                }
+              }
+            });
 
-    socket.on('chart_data', function(data) {
-      var temperatureData = data.temperature_data;
+            var socket = io.connect();
+            socket.on('connect', function() {
+              console.log('Connected to server');
+            });
 
-      // Update the labels and data in the chart
-      // chart.data.labels = Array.from({ length: temperatureData.length }, (_, i) => i);
-      chart.data.labels = temperatureData.map(function(_, index) {
-        return index + 1;
-      });
-      chart.data.datasets[0].data = temperatureData;
+            socket.on('chart_data', function(data) {
+              var temperatureData = data.temperature_data;
 
-      // Update the chart
-      chart.update();
-    });
+              // Update the labels and data in the chart
+              // chart.data.labels = Array.from({ length: temperatureData.length }, (_, i) => i);
+              chart.data.labels = temperatureData.map(function(_, index) {
+                return index + 1;
+              });
+              chart.data.datasets[0].data = temperatureData;
 
-    socket.on('new_temperature', function(data) {
-      var temperature = data.temperature;
-      var timestamp = data.timestamp;
+              // Update the chart
+              chart.update();
+            });
 
-      // Add a new data point to the chart
-      chart.data.labels.push(chart.data.labels.length);
-      chart.data.datasets[0].data.push(temperature);
+            socket.on('new_temperature', function(data) {
+              var temperature = data.temperature;
+              var timestamp = data.timestamp;
 
-      // Update the chart
-      chart.update();
-    });
-  </script>
+              // Add a new data point to the chart
+              chart.data.labels.push(chart.data.labels.length);
+              chart.data.datasets[0].data.push(temperature);
+
+              // Update the chart
+              chart.update();
+            });
+          </script>
+      </div>
+      <div class="chartSession col">
+        <canvas id="chart-humidity"></canvas>
+      </div>
+    </div>
+  </div>
+  
 
 
    <!-- Option 2: Separate Popper and Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
-{% endblock %}
+</body>
+</html>
+
+
+
