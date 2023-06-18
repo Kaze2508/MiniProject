@@ -49,7 +49,7 @@
       <div class="row">
         <div class="greeting-card col-md-12">
           <img src="{{ url_for('static', filename='img/BT21.png') }}" alt="" width="500">
-          <img src="{{ url_for('static', filename='img/ble.jpg') }}" alt="Image" align="right">
+          <img src="{{ url_for('static', filename='img/ble.jpg') }}" alt="Image" width="500" align="right">
           <div class="card border-0">
             <div class="card-body">
               <p class="font-weight-light" style="margin-bottom:0;">Hello, <b class="font-weight-bold">Lộc</b></p>
@@ -67,6 +67,7 @@
                   <div class="display-data-wrap row">
                     <div class="col-2 icon-wrap"><i class="fa-solid fa-droplet icon-data"></i></div>
                     <div class="col data-wrap"><p class="data-content font-weight-bold"><span id="temp">33</span></p></div>
+                    <img src="{{ url_for('static', filename='img/carrot01.jpg') }}" width="500" alt="Image">
                   </div>
                 </div>
               </div>
@@ -78,6 +79,7 @@
                   <div class="display-data-wrap row">
                     <div class="col-2 icon-wrap"><i class="fa-solid fa-temperature-three-quarters icon-data"></i></div>
                     <div class="col data-wrap"><p class="data-content font-weight-bold"><span id="hum">00</span></p></div>
+                    <img src="{{ url_for('static', filename='img/carrot02.jpg') }}" width="500" alt="Image">
                   </div>
                 </div>
               </div>
@@ -90,9 +92,11 @@
       <div class="row">
         <div class="chartSession col" >
           <canvas id="chart"></canvas>
+          <img src="{{ url_for('static', filename='img/carrot04.jpg') }}" width="500" alt="Image">
         </div>
         <div class="chartSession col" >
           <canvas id="chart-humidity"></canvas>
+          <img src="{{ url_for('static', filename='img/carrot03.jpg') }}" width="500" alt="Image">
         </div>
       </div>
     </div>
