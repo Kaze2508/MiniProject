@@ -144,5 +144,5 @@ mqtt_thread = Thread(target=mqtt_thread)
 mqtt_thread.start()
 
 if __name__ == '__main__':
-    app.run(host='192.168.0.156', port=5000, debug=True, threaded=False)
+    app.run(host='192.168.31.97', port=5000, debug=True, threaded=False)
     socketio.run(app)

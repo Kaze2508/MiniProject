@@ -6,6 +6,22 @@
   <title>Dashboard</title>
   <script type="text/javascript" src="{{ url_for('static', filename= 'carrot.js') }}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename= 'jungkook.js') }}"></script>
+  <style>
+    /* Your existing CSS styles here */
+
+    /* Footer styles */
+    footer {
+      background-color: #F8CAFF;
+      padding: 20px;
+      text-align: center;
+    }
+
+    footer h1 {
+      color: #FFF;
+      font-size: 36px;
+      text-shadow: 1px 1px 1px #FF00FF;
+    }
+  </style>
 
   <!-- google font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -101,11 +117,9 @@
       <div class="row">
         <div class="chartSession col" >
           <canvas id="chart"></canvas>
-          <img src="{{ url_for('static', filename='img/carrot04.jpg') }}" width="500" alt="Image">
         </div>
         <div class="chartSession col" >
           <canvas id="chart-humidity"></canvas>
-          <img src="{{ url_for('static', filename='img/carrot03.jpg') }}" width="500" alt="Image">
         </div>
       </div>
     </div>
@@ -228,7 +242,9 @@
     });
   </script>
   
-
+  <footer>
+    <h1>Thích Nguyên</h1>
+  </footer>
 
    <!-- Option 2: Separate Popper and Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
