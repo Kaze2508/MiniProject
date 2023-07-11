@@ -2,3 +2,7 @@ database.db
 database.db
 database.db
 *.db
+/*.db
+/database.db
+database.db
+database.db
