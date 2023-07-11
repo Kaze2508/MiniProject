@@ -21,6 +21,18 @@
       font-size: 36px;
       text-shadow: 1px 1px 1px #FF00FF;
     }
+    #chart-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+    #chart {
+        width: 400px;
+        height: 400px;
+
+    }
+    
   </style>
 
   <!-- google font -->
@@ -118,7 +130,10 @@
     </div>
     <div class="container wrap-chart">
       <div class="row">
-        <div class="chartSession col" >
+        <!-- <div class="chartSession col" >
+          <canvas id="chart"></canvas>
+        </div> -->
+        <div id="chart-container">
           <canvas id="chart"></canvas>
         </div>
         <!-- <div class="chartSession col" >
@@ -127,7 +142,7 @@
       </div>
     </div>
   </div>
-  <script>
+  <!-- <script>
     var ctx = document.getElementById('chart').getContext('2d');
 
     // Initialize an empty chart
@@ -185,7 +200,191 @@
       // Update the chart
       chart.update();
     });
-  </script>
+  </script> -->
+  <!-- <script>
+    var ctx = document.getElementById('chart').getContext('2d');
+
+    // Initialize an empty chart
+    var chart = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: ['Tidy', 'Untidy'],
+        datasets: [
+          {
+            data: [0, 0],
+            backgroundColor: ['#e48bae', '#4a69bd'],
+            borderWidth: 2
+          }
+        ]
+      },
+      options: {
+        responsive: true
+      }
+    });
+
+    var socket = io.connect();
+    socket.on('connect', function() {
+      console.log('Connected to server');
+    });
+
+    socket.on('chart_data', function(data) {
+      var temperatureData = data.temperature_data;
+      var tidyCount = data.tidy_count;
+      var untidyCount = data.untidy_count;
+
+      // Update the data in the chart
+      chart.data.datasets[0].data = [tidyCount, untidyCount];
+      chart.data.labels = temperatureData.map(function(_, index) {
+        return index + 1;
+      });
+      chart.update();
+    });
+
+    socket.on('new_temperature', function(data) {
+      var value = data.temperature;
+
+      // Increment the count based on the received value
+      if (value === 'tidy') {
+        chart.data.datasets[0].data[0]++;
+      } else if (value === 'untidy') {
+        chart.data.datasets[0].data[1]++;
+      }
+
+      // Update the chart
+      chart.update();
+    });
+  </script> -->
+  <!-- <script>
+    var ctx = document.getElementById('chart').getContext('2d');
+
+    // Initialize an empty chart
+    var chart = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: ['Tidy', 'Untidy'],
+        datasets: [
+          {
+            data: [0, 0],
+            backgroundColor: ['#e48bae', '#91c5e4'],
+            borderWidth: 2
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+      }
+    });
+
+    var socket = io.connect();
+    socket.on('connect', function() {
+      console.log('Connected to server');
+    });
+
+    socket.on('chart_data', function(data) {
+      var temperatureData = data.temperature_data;
+
+      // Count the occurrences of 'tidy' and 'untidy'
+      var tidyCount = temperatureData.filter(function(value) {
+        return value === 'tidy';
+      }).length;
+      var untidyCount = temperatureData.filter(function(value) {
+        return value === 'untidy';
+      }).length;
+      // var tidyCount = 1;
+      // var untidyCount = 2;
+
+      // Update the data in the chart
+      chart.data.datasets[0].data = [tidyCount, untidyCount];
+
+      // Update the chart
+      chart.update();
+    });
+
+    socket.on('new_temperature', function(data) {
+      var temperature = data.temperature;
+
+      // Add a new data point to the temperature_data array
+      chart.data.temperature_data.push(temperature);
+
+      // Count the occurrences of 'tidy' and 'untidy'
+      var tidyCount = chart.data.temperature_data.filter(function(value) {
+        return value === 'tidy';
+      }).length;
+      var untidyCount = chart.data.temperature_data.filter(function(value) {
+        return value === 'untidy';
+      }).length;
+
+      // Update the data in the chart
+      chart.data.datasets[0].data = [tidyCount, untidyCount];
+
+      // Update the chart
+      chart.update();
+    });
+  </script> -->
+
+  <script>
+    var ctx = document.getElementById('chart').getContext('2d');
+
+    // Initialize an empty chart
+    var chart = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: ['Tidy', 'Untidy'],
+        datasets: [
+          {
+            data: [1, 1],
+            backgroundColor: ['#e48bae', '#91c5e4'],
+            borderWidth: 2
+          }]
+      },
+      options: {
+        responsive: true,
+      }
+    });
+
+    var socket = io.connect();
+    socket.on('connect', function() {
+      console.log('Connected to server');
+    });
+
+    socket.on('chart_data', function(data) {
+      var temperatureData = data.temperature_data;
+
+// Count the number of tidy and untidy values in the data
+      var tidyCount = 0;
+      var untidyCount = 0;
+      for (var i = 0; i < temperatureData.length; i++) {
+        if (temperatureData[i] == 'tidy') {
+          tidyCount++;
+        } else if (temperatureData[i] == 'untidy') {
+          untidyCount++;
+        }
+      }
+
+// Update the data in the chart
+      chart.data.datasets[0].data = [tidyCount, untidyCount];
+
+// Update the chart
+      chart.update();
+    });
+
+    socket.on('new_temperature', function(data) {
+      var temperature = data.temperature;
+      var timestamp = data.timestamp;
+
+// Update the count of tidy and untidy values based on the new data
+      if (temperature == 'tidy') {
+        chart.data.datasets[0].data[0]++;
+      } else if (temperature == 'untidy') {
+        chart.data.datasets[0].data[1]++;
+      }
+
+// Update the chart
+      chart.update();
+    });
+</script>
+
+
   <!-- <script>
     var ctx = document.getElementById('chart-humidity').getContext('2d');
 
@@ -246,7 +445,7 @@
   </script> -->
   
   <footer>
-    <h1>Thích Nguyên</h1>
+    <h1>Thích Cà Rốt</h1>
   </footer>
 
    <!-- Option 2: Separate Popper and Bootstrap JS -->
