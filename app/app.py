@@ -19,7 +19,7 @@ data = []
 mqtt_broker = 'mqtt.flespi.io'
 mqtt_port = 1883
 mqtt_username = 'eco7k4WNUKZYNP2SxQmcxDP5SN3n8qBcrP7BHTdrs0d3F3L0JV14pE05fRid8Idp'
-temperature_topic = '/temperature'
+temperature_topic = 'prediction/result'
 humidity_topic = '/humidity'
 
 # MQTT callback functions
@@ -29,13 +29,17 @@ def on_connect(client, userdata, flags, rc):
 
 def on_message(client, userdata, msg):
     topic = msg.topic
+    # temperature = msg.payload.decode()
+    # socket.emit('new_temperature', {'temperature': temperature})
+    # insert_data_to_db(timestamp, temperature, sensor_type)
     timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     if topic == temperature_topic:
         sensor_type = 'Temperature'
-        temperature = float(msg.payload.decode())
-        random_offset = random.uniform(-1, 1)
-        temperature += random_offset
-        data.append((timestamp, temperature, sensor_type))
+        # temperature = float(msg.payload.decode())
+        temperature = msg.payload.decode()
+        # random_offset = random.uniform(-1, 1)
+        # temperature += random_offset
+        # data.append((timestamp, temperature, sensor_type))
         print('Temperature:', temperature)
         socketio.emit('new_temperature', {'temperature': temperature})
         insert_data_to_db(timestamp, temperature, sensor_type)
@@ -144,5 +148,5 @@ mqtt_thread = Thread(target=mqtt_thread)
 mqtt_thread.start()
 
 if __name__ == '__main__':
-    app.run(host='192.168.109.100', port=5000, debug=True, threaded=False)
+    app.run(host='192.168.0.156', port=5000, debug=True, threaded=False)
     socketio.run(app)

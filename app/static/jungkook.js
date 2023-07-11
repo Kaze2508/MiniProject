@@ -22,7 +22,7 @@ window.addEventListener('load', function() {
             var humi = document.getElementById("hum");
             var temperature = xhr.responseText;
             humidity = parseFloat(humidity).toFixed(2);
-            humi.innerHTML = humidity + "%";
+            humi.innerHTML = humidity + "°C";
         }
     }
 
@@ -35,7 +35,7 @@ window.addEventListener('load', function() {
         var humidity = data.humidity;
         var humi = document.getElementById("hum");
         humidity = parseFloat(humidity).toFixed(2);
-        humi.innerHTML = humidity + "°C";
+        humi.innerHTML = humidity + "%";
     });
 
 });

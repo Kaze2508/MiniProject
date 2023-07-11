@@ -22,7 +22,7 @@ window.addEventListener('load', function() {
             var temp = document.getElementById("temp");
             var temperature = xhr.responseText;
             temperature = parseFloat(temperature).toFixed(2);
-            temp.innerHTML = temperature + "°C";
+            // temp.innerHTML = temperature + "%";
         }
     }
 
@@ -34,8 +34,19 @@ window.addEventListener('load', function() {
     socket.on('new_temperature', function(data) {
         var temperature = data.temperature;
         var temp = document.getElementById("temp");
-        temperature = parseFloat(temperature).toFixed(2);
-        temp.innerHTML = temperature + "%";
+        // temperature = parseFloat(temperature).toFixed(2);
+        // temp.innerHTML = temperature + "°C";
+        if (temperature == "tidy")
+        {
+            var tempo = "Bạn rất sạch sẽ";
+            temp.innerHTML = tempo;
+        }
+        else 
+        {
+            var tempo = "Bạn rất bừa bộn";
+            temp.innerHTML = tempo;
+        }
+        // temp.innerHTML = temperature;
     });
 
 });

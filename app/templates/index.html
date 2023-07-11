@@ -74,7 +74,7 @@
             <div class="col d-flex align-items-center greeting-content">
               <div class="card border-0">
               <div class="card-body">
-                <p class="font-weight-light" style="margin-bottom:0;">Hello, <b class="font-weight-bold">Lộc</b></p>
+                <p class="font-weight-light" style="margin-bottom:0;">Hello, <b class="font-weight-bold">Duy</b></p>
                 <p class="font-weight-light">Nhà bạn vẫn an toàn.</p>
               </div>
             </div></div>
@@ -85,30 +85,33 @@
         </div>
         <div class="col container card-nav">
           <div class="row">
-            <div class="temperature-card col col-sm-6">
-              <div class="card border-0 mx-auto card-component" style="width: 18rem;">
-                <div class="card-body">
-                  <h2 class="card-title font-weight-bold">Nhiệt độ</h2>
+            <div class="temperature-card col col-sm-6 mx-auto">
+              <div class="card border-0 card-component" style="width: 18rem;">
+                <div class="card-body text-center">
+                  
+                  <!-- <h2 class="card-title font-weight-bold">Nhiệt độ</h2> -->
                   <div class="display-data-wrap row">
-                    <div class="col-2 icon-wrap"><i class="fa-solid fa-temperature-three-quarters icon-data"></i></div>
+                    <!-- <div class="col-2 icon-wrap"><i class="fa-solid fa-temperature-three-quarters icon-data"></i></div> -->
                     <div class="col data-wrap"><p class="data-content font-weight-bold"><span id="temp">00</span></p></div>
                     <img src="{{ url_for('static', filename='img/carrot01.jpg') }}" width="500" alt="Image">
                   </div>
                 </div>
               </div>
             </div>
-            <div class="humidity-card col col-sm-6">
+            
+            <!-- <div class="humidity-card col col-sm-6">
               <div class="card border-0 mx-auto card-component" style="width: 18rem;">
                 <div class="card-body">
+                  <img src="{{ url_for('static', filename='img/carrot02.jpg') }}" width="500" alt="Image">
                   <h2 class="card-title font-weight-bold">Độ ẩm</h2>
                   <div class="display-data-wrap row">
                     <div class="col-2 icon-wrap"><i class="fa-solid fa-droplet icon-data"></i></div>
                     <div class="col data-wrap"><p class="data-content font-weight-bold"><span id="hum">00</span></p></div>
-                    <img src="{{ url_for('static', filename='img/carrot02.jpg') }}" width="500" alt="Image">
+                    
                   </div>
                 </div>
               </div>
-            </div>            
+            </div>             -->
           </div>
         </div>
       </div>
@@ -118,9 +121,9 @@
         <div class="chartSession col" >
           <canvas id="chart"></canvas>
         </div>
-        <div class="chartSession col" >
+        <!-- <div class="chartSession col" >
           <canvas id="chart-humidity"></canvas>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -133,7 +136,7 @@
       data: {
         labels: [1],
         datasets: [{
-          label: 'Temperature',
+          label: 'Thống kê độ bừa bộn',
           data: [20],
           borderColor: '#e48bae',
           borderWidth: 2
@@ -183,7 +186,7 @@
       chart.update();
     });
   </script>
-  <script>
+  <!-- <script>
     var ctx = document.getElementById('chart-humidity').getContext('2d');
 
     // Initialize an empty chart
@@ -240,7 +243,7 @@
       // Update the chart
       chartHumidity.update();
     });
-  </script>
+  </script> -->
   
   <footer>
     <h1>Thích Nguyên</h1>
