@@ -33,6 +33,7 @@
 
     }
     
+    
   </style>
 
   <!-- google font -->
@@ -104,7 +105,7 @@
                   <!-- <h2 class="card-title font-weight-bold">Nhiệt độ</h2> -->
                   <div class="display-data-wrap row">
                     <!-- <div class="col-2 icon-wrap"><i class="fa-solid fa-temperature-three-quarters icon-data"></i></div> -->
-                    <div class="col data-wrap"><p class="data-content font-weight-bold"><span id="temp">00</span></p></div>
+                    <div class="col data-wrap"><p class="data-content font-weight-bold"><span id="temp">trạng thái</span></p></div>
                     <img src="{{ url_for('static', filename='img/carrot01.jpg') }}" width="500" alt="Image">
                   </div>
                 </div>
@@ -129,11 +130,11 @@
       </div>
     </div>
     <div class="container wrap-chart">
-      <div class="row">
+      <div class="row justify-content-center">
         <!-- <div class="chartSession col" >
           <canvas id="chart"></canvas>
         </div> -->
-        <div id="chart-container">
+        <div id="chart-container" style="width:300px; height: 300px;">
           <canvas id="chart"></canvas>
         </div>
         <!-- <div class="chartSession col" >
